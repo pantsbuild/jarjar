@@ -27,7 +27,11 @@ public class Main {
 
   static {
     try {
-      HELP = readIntoString(Main.class.getResourceAsStream("help.txt"));
+      InputStream is = Main.class.getResourceAsStream("help.txt");
+      if (is == null) {
+          throw new RuntimeException("Failed to read resource help.txt");
+      }
+      HELP = readIntoString(is);
     } catch (IOException e) {
       throw new RuntimeIOException(e);
     }
