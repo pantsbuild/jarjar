@@ -31,6 +31,5 @@ jdk:
   - oraclejdk8
 
 script: |
-  java -version
-  ./pants doc test ::
+  ./pants -ldebug doc test ::
 
