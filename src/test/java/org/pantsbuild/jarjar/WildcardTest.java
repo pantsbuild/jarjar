@@ -33,6 +33,8 @@ extends TestCase
         wildcard("net/sf/cglib/**", "foo/@1", "net/sf/cglib/!", null);
         wildcard("net/sf/cglib/*", "foo/@1", "net/sf/cglib/Bar", "foo/Bar");
         wildcard("net/sf/cglib/*/*", "foo/@2/@1", "net/sf/cglib/Bar/Baz", "foo/Baz/Bar");
+        wildcard("com/akka-config/cglib/*/*", "foo/@2/@1", "com/akka-config/cglib/Bar/Baz", "foo/Baz/Bar");
+        wildcard("com/akka-config/cglib/**", "foo/@1", "com/akka-config/cglib/Bar/Baz", "foo/Bar/Baz");
     }
 
     private void wildcard(String pattern, String result, String value, String expect) {

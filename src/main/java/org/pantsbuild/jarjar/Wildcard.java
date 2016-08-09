@@ -40,7 +40,7 @@ class Wildcard
             throw new IllegalArgumentException("Not a valid package pattern: " + pattern);
         if (pattern.indexOf("***") >= 0)
             throw new IllegalArgumentException("The sequence '***' is invalid in a package pattern");
-        
+
         String regex = pattern;
         regex = replaceAllLiteral(dstar, regex, "(.+?)");
         regex = replaceAllLiteral(star, regex, "([^/]+)");
@@ -126,7 +126,8 @@ class Wildcard
           char c = expr.charAt(i);
           if (extra.indexOf(c) >= 0)
               continue;
-          if (!Character.isJavaIdentifierPart(c))
+          // Dash ('-') support added to support with scala packages
+          if (!(Character.isJavaIdentifierPart(c) || c == '-'))
               return false;
       }
       return true;
