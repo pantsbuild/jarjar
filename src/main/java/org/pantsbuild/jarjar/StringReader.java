@@ -26,14 +26,14 @@ abstract class StringReader extends ClassVisitor
     public StringReader() {
         super(Opcodes.ASM5);
     }
-    
+
     abstract public void visitString(String className, String value, int line);
 
     private void handleObject(Object value) {
         if (value instanceof String)
             visitString(className, (String)value, line);
     }
-    
+
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         className = name;
@@ -49,7 +49,7 @@ abstract class StringReader extends ClassVisitor
             }
         };
     }
-    
+
     @Override
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
         return new AnnotationVisitor(Opcodes.ASM5) {
@@ -67,7 +67,7 @@ abstract class StringReader extends ClassVisitor
             }
         };
     }
-    
+
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc,
             String signature, String[] exceptions) {

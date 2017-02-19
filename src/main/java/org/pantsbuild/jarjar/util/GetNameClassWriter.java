@@ -23,7 +23,7 @@ import org.objectweb.asm.Opcodes;
 public class GetNameClassWriter extends ClassVisitor
 {
     private String className;
-    
+
     public GetNameClassWriter(int flags) {
         super(Opcodes.ASM5,new ClassWriter(flags));
     }
@@ -32,11 +32,11 @@ public class GetNameClassWriter extends ClassVisitor
         className = name;
         super.visit(version, access, name, signature, superName, interfaces);
     }
-    
+
     public String getClassName() {
         return className;
     }
-    
+
     public byte[] toByteArray() {
         return ((ClassWriter) cv).toByteArray();
     }
