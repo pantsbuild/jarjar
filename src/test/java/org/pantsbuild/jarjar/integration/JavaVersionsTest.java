@@ -12,6 +12,16 @@ import static org.junit.Assert.assertTrue;
 public class JavaVersionsTest extends IntegrationTestBase {
 
   @Test
+  public void testShadeJava10Class() throws Exception {
+    testVersion("10");
+  }
+
+  @Test
+  public void testShadeJava9Class() throws Exception {
+    testVersion("9");
+  }
+
+  @Test
   public void testShadeJava8Class() throws Exception {
     testVersion("1.8");
   }
