@@ -1,5 +1,4 @@
 java_library(
-  name='jarjar',
   provides=artifact(
     org='org.pantsbuild',
     name='jarjar',
@@ -29,10 +28,8 @@ java_library(
     )
   ),
   sources=rglobs('*.java'),
-  resources=[
-    ':help',
-  ],
   dependencies=[
+    ':help',
     'lib:ant',
     'lib:asm',
     'lib:asm-commons',

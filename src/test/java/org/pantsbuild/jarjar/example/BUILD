@@ -1,4 +1,1 @@
-java_library(
-  name='example',
-  sources=['Example.java'],
-)
+java_library()
