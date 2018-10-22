@@ -36,7 +36,7 @@ x-installer: &x-installer
   before_install:
     - wget https://raw.githubusercontent.com/sormuras/bach/ab648ed36892439f49a827cdf18c25e17c8095db/install-jdk.sh
   install: |
-    feature=$(echo ${JDK} | sed -E -e 's/^.*([0-9]+)$/\1/')
+    feature=$(echo ${JDK} | sed -E -e 's/^[^0-9]*([0-9]+)$/\1/')
     license=$(echo ${JDK} | sed -E -e 's/^oracle.*$/BCL/' -e 's/^open.*$/GPL/')
     source ./install-jdk.sh -F ${feature} -L ${license} -v
 
@@ -54,8 +54,8 @@ jobs:
       name: Oracle JDK 8
       env: JDK=oraclejdk8
     - <<: *x-installer
-      name: Oracle JDK 9
-      env: JDK=oraclejdk9
+      name: OpenJDK 9
+      env: JDK=openjdk9
     - <<: *x-installer
       name: OpenJDK 10
       env: JDK=openjdk10
