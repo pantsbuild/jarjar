@@ -34,11 +34,11 @@ x-switcher: &x-switcher
 x-installer: &x-installer
   <<: *x-test
   before_install:
-    - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
+    - wget https://raw.githubusercontent.com/sormuras/bach/ab648ed36892439f49a827cdf18c25e17c8095db/install-jdk.sh
   install: |
     feature=$(echo ${JDK} | sed -E -e 's/^.*([0-9]+)$/\1/')
     license=$(echo ${JDK} | sed -E -e 's/^oracle.*$/BCL/' -e 's/^open.*$/GPL/')
-    source ./install-jdk.sh -F ${feature} -L ${license}
+    source ./install-jdk.sh -F ${feature} -L ${license} -v
 
 jobs:
   - <<: *x-switcher
