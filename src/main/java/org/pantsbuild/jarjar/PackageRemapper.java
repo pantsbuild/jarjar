@@ -21,7 +21,7 @@ import org.objectweb.asm.commons.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-class PackageRemapper extends Remapper
+public class PackageRemapper extends Remapper
 {
     private static final String RESOURCE_SUFFIX = "RESOURCE";
     
