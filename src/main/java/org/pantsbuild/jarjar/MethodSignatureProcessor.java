@@ -16,8 +16,8 @@ import org.pantsbuild.jarjar.util.JarProcessor;
 /**
  * Remaps string values representing method signatures to use the new package.
  *
- * <p>{@link PackageRemapper} is only able to string values which exactly match the package being
- * renamed. Method signatures are more difficult to detect so this class keeps track of which
+ * <p>{@link PackageRemapper} is only able to remap string values which exactly match the package
+ * being renamed. Method signatures are more difficult to detect so this class keeps track of which
  * methods definitely take method signatures and remaps those explicitly.
  */
 public class MethodSignatureProcessor implements JarProcessor {
@@ -68,20 +68,20 @@ public class MethodSignatureProcessor implements JarProcessor {
         super(Opcodes.ASM7, methodVisitor);
       }
 
+      private boolean shouldMarkNextLdcForRewrite(int opcode, String name) {
+        return opcode == Opcodes.INVOKEVIRTUAL && METHOD_NAMES_WITH_PARAMS_TO_REWRITE.contains(name);
+      }
+
       @Override
       public void visitMethodInsn(int opcode, String owner, String name, String descriptor) {
-        if (opcode == Opcodes.INVOKEVIRTUAL && METHOD_NAMES_WITH_PARAMS_TO_REWRITE.contains(name)) {
-          rewriteNextLdcInstruction = true;
-        }
+        rewriteNextLdcInstruction = shouldMarkNextLdcForRewrite(opcode, name);
         mv.visitMethodInsn(opcode, owner, name, descriptor);
       }
 
       @Override
       public void visitMethodInsn(
           int opcode, String owner, String name, String descriptor, boolean isInterface) {
-        if (opcode == Opcodes.INVOKEVIRTUAL && METHOD_NAMES_WITH_PARAMS_TO_REWRITE.contains(name)) {
-          rewriteNextLdcInstruction = true;
-        }
+        rewriteNextLdcInstruction = shouldMarkNextLdcForRewrite(opcode, name);
         mv.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
       }
 

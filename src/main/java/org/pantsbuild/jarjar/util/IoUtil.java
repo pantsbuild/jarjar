@@ -25,6 +25,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+// Visible for testing
 public class IoUtil {
     private IoUtil() {}
 
