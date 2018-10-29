@@ -1,8 +1,5 @@
-# Enables support for a docker container-based build
-# which should provide faster startup times and beefier
-# "machines". This is also required in order to use the
-# cache configured below.
 sudo: false
+dist: trusty
 
 before_cache:
   # The `ivydata-*.properties` & root level `*.{properties,xml}` files'
@@ -24,15 +21,45 @@ cache:
 
 language: java
 
-env:
-  # TODO: JDK6 does not react well to concurrent usage of in-process javac as used by zinc, so
-  # we limit concurrency there.
-  - JDK=openjdk6   WORKERS=1
-  - JDK=openjdk7   WORKERS=6
-  - JDK=oraclejdk7 WORKERS=6
-  - JDK=oraclejdk8 WORKERS=6
+x-test: &x-test
+  script: |
+    java -version
+    ./pants --compile-zinc-worker-count=${WORKERS:-6} doc test ::
 
-script: |
-  jdk_switcher use ${JDK}
-  ./pants --compile-zinc-worker-count=${WORKERS} doc test ::
+x-switcher: &x-switcher
+  <<: *x-test
+  install:
+    - jdk_switcher use ${JDK}
+
+x-installer: &x-installer
+  <<: *x-test
+  before_install:
+    - wget https://raw.githubusercontent.com/sormuras/bach/ab648ed36892439f49a827cdf18c25e17c8095db/install-jdk.sh
+  install: |
+    feature=$(echo ${JDK} | sed -E -e 's/^[^0-9]*([0-9]+)$/\1/')
+    license=$(echo ${JDK} | sed -E -e 's/^oracle.*$/BCL/' -e 's/^open.*$/GPL/')
+    source ./install-jdk.sh -F ${feature} -L ${license} -v
+
+jobs:
+  include:
+    - <<: *x-switcher
+      name: OpenJDK 6
+      # JDK 6 does not react well to concurrent usage of in-process javac as used by zinc,
+      # so we limit concurrency.
+      env: JDK=openjdk6 WORKERS=1
+    - <<: *x-switcher
+      name: OpenJDK 7
+      env: JDK=openjdk7
+    - <<: *x-switcher
+      name: Oracle JDK 8
+      env: JDK=oraclejdk8
+    - <<: *x-installer
+      name: OpenJDK 9
+      env: JDK=openjdk9
+    - <<: *x-installer
+      name: OpenJDK 10
+      env: JDK=openjdk10
+    - <<: *x-installer
+      name: OpenJDK 11
+      env: JDK=openjdk11
 
