@@ -33,6 +33,24 @@ class Wildcard
     private final String[] strings;
     private final int[] refs;
 
+
+    private static String escapeComponents(String s) {
+        String[] parts = s.split("\\.", -1);
+        StringBuilder b = new StringBuilder();
+
+        for (int i = 0; i < parts.length; i++) {
+            if (i != 0)
+                b.append('.');
+
+            if (parts[i].contains("*"))
+                b.append(parts[i]);
+            else
+                b.append(Pattern.quote(parts[i]));
+        }
+
+        return b.toString();
+    }
+
     public Wildcard(String pattern, String result) {
         if (pattern.equals("**"))
             throw new IllegalArgumentException("'**' is not a valid pattern");
@@ -41,7 +59,7 @@ class Wildcard
         if (pattern.indexOf("***") >= 0)
             throw new IllegalArgumentException("The sequence '***' is invalid in a package pattern");
 
-        String regex = pattern;
+        String regex = escapeComponents(pattern);
         regex = replaceAllLiteral(dstar, regex, "(.+?)");
         regex = replaceAllLiteral(star, regex, "([^/]+)");
         regex = replaceAllLiteral(estar, regex, "*)");
