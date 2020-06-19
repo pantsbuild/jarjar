@@ -62,6 +62,12 @@ class RulesFileParser
                 element = new Zap();
             } else if (type.equals("keep")) {
                 element = new Keep();
+            } else if (type.equals("rename")) {
+                if (parts.length < 3)
+                    error(c, parts);
+                Rename rename = new Rename();
+                rename.setResult(parts[2]);
+                element = rename;
             } else {
                 error(c, parts);
             }
