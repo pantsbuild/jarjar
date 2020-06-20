@@ -1,2 +1,0 @@
-rule io.** com.dropbox.shaded.@0
-rename META-INF/native/libnetty_transport_native_epoll_x86_64.so META-INF/native/com_dropbox_shaded_libnetty_tcnative.so
