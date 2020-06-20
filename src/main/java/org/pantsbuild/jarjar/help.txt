@@ -49,6 +49,7 @@ Rules file format:
     rule <pattern> <result>
     zap <pattern>
     keep <pattern>
+    rename <src> <dest>
 
   The standard rule ("rule") is used to rename classes. All references
   to the renamed classes will also be updated. If a class name is
@@ -73,3 +74,7 @@ Rules file format:
   via dependency analysis are discarded when writing the output
   jar. This is the last step in the process, after renaming and zapping.
 
+  The "rename" rule allows any single matched file to be renamed in the
+  resulting jar file. Only one rename rule is allowed per source file.
+  This is intended for resource files and no references are updated as
+  part of the rename operation.

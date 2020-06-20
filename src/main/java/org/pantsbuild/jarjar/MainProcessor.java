@@ -49,6 +49,7 @@ class MainProcessor implements JarProcessor
         List<Zap> zapList = new ArrayList<Zap>();
         List<Rule> ruleList = new ArrayList<Rule>();
         List<Keep> keepList = new ArrayList<Keep>();
+        List<Rename> renameList = new ArrayList<Rename>();
         for (PatternElement pattern : patterns) {
             if (pattern instanceof Zap) {
                 zapList.add((Zap) pattern);
@@ -56,6 +57,8 @@ class MainProcessor implements JarProcessor
                 ruleList.add((Rule) pattern);
             } else if (pattern instanceof Keep) {
                 keepList.add((Keep) pattern);
+            } else if (pattern instanceof Rename) {
+                renameList.add((Rename) pattern);
             }
         }
 
@@ -78,6 +81,7 @@ class MainProcessor implements JarProcessor
         }));
         processors.add(new MethodSignatureProcessor(pr));
         processors.add(new ResourceProcessor(pr));
+        processors.add(new RenameProcessor(renameList));
         chain = new JarProcessorChain(processors.toArray(new JarProcessor[processors.size()]));
     }
 
